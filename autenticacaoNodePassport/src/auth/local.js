@@ -25,7 +25,7 @@ module.exports = (passport) => {
   })
 
   /**
-   * Adequando parte de registro de um novo Usuário
+   * Estrategia Passport para registro de novo Usuário
    */
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
@@ -38,7 +38,7 @@ module.exports = (passport) => {
         if (!userExists) {
           let user = new User(req.body)
 
-          user.password = user.genHash(user.password)
+          user.password = user.genHash(user.password) // criptografando senha com bycrpt
 
           return user
             .save()
@@ -50,11 +50,35 @@ module.exports = (passport) => {
               return
             })
         }
-
-        return callback(null, false)
+        return callback(null, false) // username já existe (unique)
       })
       .catch((err) => {
         return callback(err, false)
+      })
+  }))
+
+  /**
+   * Estrategia Passport para autenticação
+   */
+  passport.use('local-signin', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true // req é "espelhada" da requisição (req.body)
+  }, function (req, username, password, callback) {
+    User
+      .findOne({ username: username })
+      .then((user) => {
+        if (!user) {
+          return callback(null, false) // username não existe
+        }
+
+        user.validate(password, (err, result) => {
+          if (!result || err) {
+            return callback(null, false) // password incorreto
+          }
+
+          return callback(null, user)
+        })
       })
   }))
 }
