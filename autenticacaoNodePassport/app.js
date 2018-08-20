@@ -19,9 +19,10 @@ app.use(passport.initialize())
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'src/view'))
 
-require('./src/index')(app)
+require('./src/routes')(app)
 
 mongoose.connect('mongodb://localhost:27017/authNodePassport')
+mongoose.Promise = global.Promise
 
 app.listen(3000, () => {
   console.log('Express started')
