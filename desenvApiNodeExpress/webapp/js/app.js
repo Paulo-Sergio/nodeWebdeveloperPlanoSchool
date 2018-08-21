@@ -26,16 +26,30 @@
       })
     }
 
+    const populateCategory = function () {
+      $.get('http://localhost:3000/categories/', function (result) {
+        if (!result.length && !result.status) {
+          return;
+        }
+
+        result.data.forEach(function (category) {
+          let template = '<option value="' + category._id + '"> ' + category.name + '</option>'
+          $('#select_category').append(template)
+        })
+      })
+    }
+
     const createData = function () {
       let title = $('input[name="title"]').val()
       let price = $('input[name="price"]').val()
+      let category = $('#select_category').val() // envia apenas _id de Category
 
       if (!title || !price) {
         console.log("Invalid Body")
         return
       }
 
-      $.post('http://localhost:3000/bills/', { title: title, price: price }, function (result) {
+      $.post('http://localhost:3000/bills/', { title: title, price: price, category: category }, function (result) {
         // clear form
         $('input[name="title"]').val('')
         $('input[name="price"]').val('')
@@ -58,8 +72,24 @@
       })
     }
 
+    const createDataCat = function () {
+      let name = $('input[name="name"]').val()
+
+      if (!name) {
+        console.log("Invalid Body")
+        return
+      }
+
+      $.post('http://localhost:3000/categories/', { name: name }, function (result) {
+        // clear form
+        $('input[name="name"]').val('')
+      })
+    }
+
     listData()
+    populateCategory()
     $('#btn_create').on('click', createData)
+    $('#btn_create_cat').on('click', createDataCat)
     $('#list_table tbody').on('click', '#btn_delete', removeData)
   })
 
