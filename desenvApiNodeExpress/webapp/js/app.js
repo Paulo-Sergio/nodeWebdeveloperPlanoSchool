@@ -42,17 +42,20 @@
     const createData = function () {
       let title = $('input[name="title"]').val()
       let price = $('input[name="price"]').val()
+      let cep = $('input[name="cep"]').val()
       let category = $('#select_category').val() // envia apenas _id de Category
 
-      if (!title || !price) {
+      if (!title || !price || !category) {
         console.log("Invalid Body")
         return
       }
 
-      $.post('http://localhost:3000/bills/', { title: title, price: price, category: category }, function (result) {
+      $.post('http://localhost:3000/bills/', { title: title, price: price, category: category, cep: cep }, function (result) {
         // clear form
         $('input[name="title"]').val('')
         $('input[name="price"]').val('')
+        $('input[name="cep"]').val('')
+        $('#select_category').val('')
 
         // list
         listData()
