@@ -45,8 +45,22 @@
       })
     }
 
+    const removeData = function () {
+      let id = $(this).data('id')
+      let url = 'http://localhost:3000/bills/' + id
+
+      $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function (result) {
+          listData()
+        }
+      })
+    }
+
     listData()
     $('#btn_create').on('click', createData)
+    $('#list_table tbody').on('click', '#btn_delete', removeData)
   })
 
 })(jQuery)
