@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppService } from './services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'app'
+
+  constructor(
+    private appService: AppService
+  ) { }
+
+  ngOnInit() {
+    this.appService.fetchServer()
+      .subscribe((data) => {
+        console.log(data)
+      })
+  }
 }
