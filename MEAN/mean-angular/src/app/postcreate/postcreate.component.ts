@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../services/app.service';
 
 @Component({
@@ -18,8 +18,8 @@ export class PostcreateComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      title: [""],
-      body: [""]
+      title: ["", Validators.required],
+      body: ["", Validators.required]
     })
   }
 
@@ -27,6 +27,19 @@ export class PostcreateComponent implements OnInit {
     this.appService.save(this.form.value.title, this.form.value.body)
       .subscribe((res) => {
         console.log(res)
+        this.clear()
       })
   }
+
+  get f() {
+    return this.form.controls
+  }
+
+  private clear() {
+    this.form = this.formBuilder.group({
+      title: ["", Validators.required],
+      body: ["", Validators.required]
+    })
+  }
+
 }

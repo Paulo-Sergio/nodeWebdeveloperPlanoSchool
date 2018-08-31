@@ -9,17 +9,20 @@ import { AppService } from './services/app.service';
 import { UiModule } from './ui/ui.module';
 import { PostlistComponent } from './postlist/postlist.component';
 import { PostcreateComponent } from './postcreate/postcreate.component';
+import { PostdetailsComponent } from './postdetails/postdetails.component';
 
 const appRoutes: Routes = [
   { path: '', component: PostlistComponent },
   { path: 'new', component: PostcreateComponent },
+  { path: 'post/:slug', component: PostdetailsComponent },
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     PostlistComponent,
-    PostcreateComponent
+    PostcreateComponent,
+    PostdetailsComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
