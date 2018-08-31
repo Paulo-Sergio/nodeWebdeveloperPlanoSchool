@@ -11,8 +11,11 @@ export class AppService {
 
   constructor(private http: Http) { }
 
-  fetchServer() {
-    return this.http.get(this.url)
+  fetchAll(): Observable<Post[]> {
+    return this.http.get(`${this.url}/posts`)
+      .map((res) => {
+        return res.json()
+      })
   }
 
   save(title: string, body: string): Observable<Post> {
